@@ -1,9 +1,26 @@
 import Link from "next/link";
-
 const products = [
-  { id: "1", name: "HP Charger", price: 799, stock: 10, description: "Original HP laptop charger, 65W." },
-  { id: "2", name: "Lenovo Keyboard", price: 499, stock: 15, description: "USB Lenovo keyboard, full size." },
-  { id: "3", name: "Dell Battery", price: 1499, stock: 8, description: "Compatible Dell laptop battery." },
+  {
+    id: "hp-charger",          // 👈 yahi ID URL se match karegi
+    name: "HP Charger",
+    price: 799,
+    stock: 10,
+    description: "Original HP laptop charger, 65W.",
+  },
+  {
+    id: "lenovo-keyboard",
+    name: "Lenovo Keyboard",
+    price: 499,
+    stock: 15,
+    description: "USB Lenovo keyboard, full size.",
+  },
+  {
+    id: "dell-battery",
+    name: "Dell Battery",
+    price: 1499,
+    stock: 8,
+    description: "Compatible Dell laptop battery.",
+  },
 ];
 
 type ProductPageProps = {
