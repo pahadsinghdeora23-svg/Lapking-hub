@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useEffect } from "react";
 
 type Product = {
   id: string;
@@ -35,11 +36,10 @@ const demoProducts: Product[] = [
 ];
 
 export default function ProductsPage() {
-  const router = useRouter();
-
-  const handleAddProduct = () => {
-    router.push("/admin/products/new");
-  };
+  // Sirf test ke liye – agar ye alert show ho raha hai to JS sahi chal rahi hai
+  useEffect(() => {
+    alert("Products page JS working (test alert) – baad me isko hata denge.");
+  }, []);
 
   const handleEdit = (id: string) => {
     alert(`Edit clicked for product: ${id}\n(Abhi demo mode hai)`);
@@ -65,12 +65,13 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        <button
-          onClick={handleAddProduct}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow"
+        {/* yaha simple Link – koi router.push nahi */}
+        <Link
+          href="/admin/products/new"
+          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow flex items-center justify-center"
         >
           + Add Product
-        </button>
+        </Link>
       </div>
 
       {/* Table */}
