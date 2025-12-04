@@ -1,22 +1,24 @@
 // lib/firebase.ts
+// Next.js + TypeScript ke liye proper Firebase config (npm package se)
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-// Agar aage image ka use karoge to:
 import { getStorage } from "firebase/storage";
 
+// ⚠️ Abhi ke liye direct config object use kar rahe hain.
+// Baad me isko .env variables me shift kar denge.
 const firebaseConfig = {
-  apiKey: "AIzaSyC9RRtm7-dnuZGTpu1qRv1yFMPyi3ijK_s",
+  apiKey: "AIzaSyCWLfh-mu2bcl0fpyu0YWfyv1j51X_s",
   authDomain: "lapking-hub-cb2fb.firebaseapp.com",
   projectId: "lapking-hub-cb2fb",
-  storageBucket: "lapking-hub-cb2fb.firebasestorage.app",
-  messagingSenderId: "1050562265952",
-  appId: "1:1050562265952:web:bfbf8edecc638415e35405",
-  measurementId: "G-8LCDLH14VB",
+  storageBucket: "lapking-hub-cb2fb.appspot.com",
+  messagingSenderId: "1055062265952",
+  appId: "1:1055062265952:web:bfebfedecc63841e5e35405",
+  measurementId: "G-BLDLHI4VB0",
 };
 
-// Next.js ke liye safe initialize
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+// Agar app pehle se initialized hai to wahi use karo, warna naya init karo
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const storage = getStorage(app);
