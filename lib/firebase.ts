@@ -1,19 +1,11 @@
 // lib/firebase.ts
+// Firebase client SDK using npm package
 
-// Firebase SDK imports (npm se – package.json me "firebase" already added hai)
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  Timestamp,
-} from "firebase/firestore";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// ⚙️ Aapka Firebase config (Firebase console se)
+// Yahi config tumhare Firebase console se aaya hai
 const firebaseConfig = {
   apiKey: "AIzaSyC9RRtm7-dnuZGTpu1qRv1yFMPyi3ijK_s",
   authDomain: "lapking-hub-cb2fb.firebaseapp.com",
@@ -24,26 +16,9 @@ const firebaseConfig = {
   measurementId: "G-8LCDLH14VB",
 };
 
-// 🔥 Initialize Firebase app (sirf ek baar)
-const app = initializeApp(firebaseConfig);
+// Next.js me multiple baar initialize na ho, isliye ye check
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// 📄 Firestore + 📸 Storage instances
+// Firestore + (future) Storage
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-
-// ⏱ Helper: timestamp direct yaha se use kar sakte ho
-export const serverTimestamp = Timestamp;
-
-// 📤 Helper function: product image upload
-export async function uploadProductImage(file: File): Promise<string> {
-  // unique file name banane ke liye timestamp + original name
-  const fileRef = ref(storage, `product-images/${Date.now()}-${file.name}`);
-
-  // file Firebase Storage me upload karo
-  const snapshot = await uploadBytes(fileRef, file);
-
-  // public URL le aao jo Firestore me save hoga
-  const downloadUrl = await getDownloadURL(snapshot.ref);
-
-  return downloadUrl;
-}
