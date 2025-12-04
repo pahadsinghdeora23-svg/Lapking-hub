@@ -1,51 +1,73 @@
 "use client";
 
 export default function ProductsPage() {
-  function handleAddClick() {
-    alert("✅ Add Product button WORKING!\nAbhi ye sirf test hai.");
-  }
-
-  function handleEditClick() {
-    alert("✅ Edit button WORKING (test).");
-  }
-
-  function handleDeleteClick() {
-    alert("✅ Delete button WORKING (test).");
-  }
-
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-semibold mb-4">Products (TEST PAGE)</h1>
+    <div
+      style={{
+        padding: "24px",
+        minHeight: "100vh",
+        background: "#f4f4f5",
+        fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+      }}
+    >
+      <h1 style={{ fontSize: "24px", fontWeight: 600, marginBottom: "16px" }}>
+        Products TEST PAGE (V3)
+      </h1>
 
-      {/* Add Product test button */}
-      <button
-        type="button"
-        onClick={handleAddClick}
-        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow"
-      >
-        + Add Product (TEST)
-      </button>
+      <p style={{ marginBottom: "16px", fontSize: "14px" }}>
+        Agar niche wale buttons pe click karne se <b>alert</b> aata hai,
+        to React / Next sab theek hai. Sirf yahi test kar rahe hain.
+      </p>
 
-      <div className="mt-8 space-x-2">
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
         <button
           type="button"
-          onClick={handleEditClick}
-          className="px-3 py-1 text-xs rounded border border-gray-300"
+          onClick={() => alert("✅ Add Product button WORKING")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "none",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Add Product (TEST)
+        </button>
+
+        <button
+          type="button"
+          onClick={() => alert("✅ Edit button WORKING")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "1px solid #000",
+            fontSize: "14px",
+            cursor: "pointer",
+          }}
         >
           Edit (TEST)
         </button>
+
         <button
           type="button"
-          onClick={handleDeleteClick}
-          className="px-3 py-1 text-xs rounded border border-red-300 text-red-600"
+          onClick={() => alert("✅ Delete button WORKING")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "1px solid #dc2626",
+            color: "#dc2626",
+            fontSize: "14px",
+            cursor: "pointer",
+          }}
         >
           Delete (TEST)
         </button>
       </div>
 
-      <p className="mt-6 text-sm text-gray-500">
-        Ye sirf testing page hai. Jab ye buttons chalne lagenge tab wapas
-        proper table + Firestore data add karenge.
+      <p style={{ marginTop: "24px", fontSize: "13px", color: "#6b7280" }}>
+        Note: Ye sirf testing page hai. Jab yaha click sahi se chalne lagega,
+        tab wapas se proper table + Firestore data add karenge.
       </p>
     </div>
   );
