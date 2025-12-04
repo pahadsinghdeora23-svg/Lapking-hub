@@ -1,15 +1,6 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProductsPage() {
-  const router = useRouter();
-
-  // ✅ Ye function button click pe chalega
-  const handleAddProduct = () => {
-    router.push("/admin/products/new");
-  };
-
   return (
     <div className="p-6 space-y-6">
       {/* Top header */}
@@ -21,17 +12,17 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        {/* ✅ Simple button with onClick */}
-        <button
-          onClick={handleAddProduct}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm"
+        {/* ✅ Ab yaha simple Link hai, button jaisa dikhega */}
+        <Link
+          href="/admin/products/new"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm inline-flex items-center justify-center"
         >
           + Add Product
-        </button>
+        </Link>
       </div>
 
-      {/* 🔹 Neeche same pehle wala demo table hi rakha hai */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Neeche demo products table */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mt-4">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50">
             <tr>
