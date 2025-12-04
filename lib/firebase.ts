@@ -1,11 +1,10 @@
 // lib/firebase.ts
-// Firebase client SDK using npm package
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+// Agar aage image ka use karoge to:
 import { getStorage } from "firebase/storage";
 
-// Yahi config tumhare Firebase console se aaya hai
 const firebaseConfig = {
   apiKey: "AIzaSyC9RRtm7-dnuZGTpu1qRv1yFMPyi3ijK_s",
   authDomain: "lapking-hub-cb2fb.firebaseapp.com",
@@ -16,9 +15,9 @@ const firebaseConfig = {
   measurementId: "G-8LCDLH14VB",
 };
 
-// Next.js me multiple baar initialize na ho, isliye ye check
+// Next.js ke liye safe initialize
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Firestore + (future) Storage
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+export default app;
