@@ -1,307 +1,276 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import React, { useState, FormEvent } from "react";
 
-type Product = {
-  id?: string;
+type ProductForm = {
   name: string;
   category: string;
   subCategory: string;
   compatibleModel: string;
-  price: number;
+  price: string;
   partNumber: string;
+  stock: string;
   description: string;
-  imageUrl: string;
 };
 
-export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+const demoProducts = [
+  { name: "HP Charger", sku: "HP-65W", price: 799, stock: 10 },
+  { name: "Lenovo Keyboard", sku: "LKB-01", price: 499, stock: 15 },
+  { name: "Dell Battery", sku: "DELL-BAT", price: 1499, stock: 8 },
+];
 
-  const [formData, setFormData] = useState<
-    Omit<Product, "id" | "price"> & { price: string }
-  >({
+export default function AdminProductsPage() {
+  const [showForm, setShowForm] = useState(false);
+
+  const [form, setForm] = useState<ProductForm>({
     name: "",
     category: "",
     subCategory: "",
     compatibleModel: "",
     price: "",
     partNumber: "",
+    stock: "",
     description: "",
-    imageUrl: "",
   });
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const snap = await getDocs(collection(db, "products"));
-      const items: Product[] = snap.docs.map((d) => {
-        const data = d.data() as Omit<Product, "id">;
-        return { id: d.id, ...data };
-      });
-      setProducts(items);
-    } catch (err) {
-      console.error("Error loading products", err);
-      alert("Products load karne me problem aayi. Console check karo.");
-    } finally {
-      setLoading(false);
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim()) {
-      alert("Product name required hai.");
-      return;
-    }
+    // TODO: Yaha baad me Firestore me save karenge
+    console.log("New product:", form);
 
-    const priceNumber = Number(formData.price);
-    if (Number.isNaN(priceNumber) || priceNumber < 0) {
-      alert("Price sahi number me daalo.");
-      return;
-    }
+    alert("Product form submit ho gaya (demo). Abhi data Firebase me save nahi ho raha, ye next step hoga.");
 
-    setSaving(true);
-    try {
-      await addDoc(collection(db, "products"), {
-        name: formData.name.trim(),
-        category: formData.category.trim(),
-        subCategory: formData.subCategory.trim(),
-        compatibleModel: formData.compatibleModel.trim(),
-        price: priceNumber,
-        partNumber: formData.partNumber.trim(),
-        description: formData.description.trim(),
-        imageUrl: formData.imageUrl.trim(),
-        createdAt: new Date(),
-      });
+    // reset form
+    setForm({
+      name: "",
+      category: "",
+      subCategory: "",
+      compatibleModel: "",
+      price: "",
+      partNumber: "",
+      stock: "",
+      description: "",
+    });
 
-      setFormData({
-        name: "",
-        category: "",
-        subCategory: "",
-        compatibleModel: "",
-        price: "",
-        partNumber: "",
-        description: "",
-        imageUrl: "",
-      });
-
-      await fetchProducts();
-    } catch (err) {
-      console.error("Error saving product", err);
-      alert("Product save karne me error aaya.");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (id?: string) => {
-    if (!id) return;
-    const ok = confirm("Ye product delete karna hai?");
-    if (!ok) return;
-
-    try {
-      await deleteDoc(doc(db, "products", id));
-      setProducts((prev) => prev.filter((p) => p.id !== id));
-    } catch (err) {
-      console.error("Error deleting", err);
-      alert("Delete karne me problem aayi.");
-    }
+    setShowForm(false);
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Products</h1>
-        <p className="text-sm text-gray-500">
-          Yaha se aap Lapking Hub ke saare products manage karoge.
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-2xl font-semibold">Products</h1>
+          <p className="text-sm text-gray-500">
+            Yaha se aap Lapking Hub ke saare products manage karoge.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setShowForm(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+        >
+          + Add Product
+        </button>
+      </div>
+
+      {/* Existing demo products table */}
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 text-left">NAME</th>
+              <th className="px-4 py-2 text-left">SKU</th>
+              <th className="px-4 py-2 text-left">PRICE</th>
+              <th className="px-4 py-2 text-left">STOCK</th>
+              <th className="px-4 py-2 text-right">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {demoProducts.map((p) => (
+              <tr key={p.sku} className="border-t">
+                <td className="px-4 py-2">{p.name}</td>
+                <td className="px-4 py-2">{p.sku}</td>
+                <td className="px-4 py-2">₹{p.price}</td>
+                <td className="px-4 py-2">{p.stock}</td>
+                <td className="px-4 py-2 text-right">
+                  <button className="border px-3 py-1 text-xs rounded mr-2">
+                    Edit
+                  </button>
+                  <button className="border border-red-500 text-red-600 px-3 py-1 text-xs rounded">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <p className="text-xs text-gray-500 px-4 py-3 border-t bg-gray-50">
+          Note: Abhi ye demo data hai. Next step me isko Firebase se connect
+          karenge.
         </p>
       </div>
 
-      {/* Add Product Form */}
-      <div className="bg-white rounded-lg shadow border p-4 space-y-4">
-        <h2 className="text-lg font-semibold mb-2">Add / Create Product</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid md:grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-sm font-medium">
-                Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="HP Laptop Keyboard"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-              />
+      {/* Add Product form (popup style) */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Add New Product</h2>
+              <button
+                onClick={() => setShowForm(false)}
+                className="text-gray-500 text-sm"
+              >
+                ✕
+              </button>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Category</label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="Keyboard / Charger / Battery"
-                value={formData.category}
-                onChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
-                }
-              />
-            </div>
+            <form className="space-y-3" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-xs font-medium mb-1">
+                  Product Name
+                </label>
+                <input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  placeholder="HP Charger"
+                  required
+                />
+              </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Sub Category</label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="Dell / HP / Lenovo"
-                value={formData.subCategory}
-                onChange={(e) =>
-                  setFormData({ ...formData, subCategory: e.target.value })
-                }
-              />
-            </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1">
+                    Category
+                  </label>
+                  <input
+                    name="category"
+                    value={form.category}
+                    onChange={handleChange}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                    placeholder="Keyboard, Charger, Battery..."
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1">
+                    Sub Category / Brand
+                  </label>
+                  <input
+                    name="subCategory"
+                    value={form.subCategory}
+                    onChange={handleChange}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                    placeholder="Dell, HP, Lenovo..."
+                    required
+                  />
+                </div>
+              </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Compatible Model</label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="Dell Inspiron 3521, HP 15s..."
-                value={formData.compatibleModel}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    compatibleModel: e.target.value,
-                  })
-                }
-              />
-            </div>
+              <div>
+                <label className="block text-xs font-medium mb-1">
+                  Compatible Model
+                </label>
+                <input
+                  name="compatibleModel"
+                  value={form.compatibleModel}
+                  onChange={handleChange}
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  placeholder="Dell Inspiron 3521..."
+                />
+              </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Price (₹)</label>
-              <input
-                type="number"
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="1499"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({ ...formData, price: e.target.value })
-                }
-              />
-            </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-medium mb-1">
+                    Price (₹)
+                  </label>
+                  <input
+                    name="price"
+                    type="number"
+                    value={form.price}
+                    onChange={handleChange}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                    placeholder="1499"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1">
+                    Stock Qty
+                  </label>
+                  <input
+                    name="stock"
+                    type="number"
+                    value={form.stock}
+                    onChange={handleChange}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                    placeholder="10"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1">
+                    Part No
+                  </label>
+                  <input
+                    name="partNumber"
+                    value={form.partNumber}
+                    onChange={handleChange}
+                    className="w-full border rounded px-2 py-1 text-sm"
+                    placeholder="DELL-BAT-3521"
+                  />
+                </div>
+              </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Part No.</label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="D3LL-KB-123"
-                value={formData.partNumber}
-                onChange={(e) =>
-                  setFormData({ ...formData, partNumber: e.target.value })
-                }
-              />
-            </div>
+              <div>
+                <label className="block text-xs font-medium mb-1">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  rows={3}
+                  placeholder="Short description about this product..."
+                />
+              </div>
 
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-sm font-medium">Image URL (optional)</label>
-              <input
-                className="w-full rounded border px-3 py-2 text-sm"
-                placeholder="https://example.com/image.jpg"
-                value={formData.imageUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, imageUrl: e.target.value })
-                }
-              />
-              <p className="text-xs text-gray-400">
-                Abhi ke liye sirf URL. Baad me direct upload feature add
-                karenge.
+              <p className="text-[11px] text-gray-500">
+                Note: Abhi image upload aur Firebase save connect nahi hai. Sirf
+                form UI bana rahe hain.
               </p>
-            </div>
 
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-sm font-medium">Description</label>
-              <textarea
-                className="w-full rounded border px-3 py-2 text-sm"
-                rows={3}
-                placeholder="Short description in Hindi / English..."
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-            </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="border px-3 py-1 rounded text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-1 rounded text-sm"
+                >
+                  Save Product
+                </button>
+              </div>
+            </form>
           </div>
-
-          <button
-            type="submit"
-            disabled={saving}
-            className="inline-flex items-center rounded bg-black text-white text-sm font-medium px-4 py-2 disabled:opacity-60"
-          >
-            {saving ? "Saving..." : "Save Product"}
-          </button>
-        </form>
-      </div>
-
-      {/* Products Table */}
-      <div className="bg-white rounded-lg shadow border p-4">
-        <h2 className="text-lg font-semibold mb-3">Products List</h2>
-
-        {loading ? (
-          <p className="text-sm text-gray-500">Loading products...</p>
-        ) : products.length === 0 ? (
-          <p className="text-sm text-gray-500">
-            Abhi koi product nahi hai. Upar form se naya product add karo.
-          </p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr className="border-b bg-gray-50 text-left">
-                  <th className="px-3 py-2">Name</th>
-                  <th className="px-3 py-2">Category / Sub</th>
-                  <th className="px-3 py-2">Compatible Model</th>
-                  <th className="px-3 py-2">Part No.</th>
-                  <th className="px-3 py-2">Price</th>
-                  <th className="px-3 py-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((p) => (
-                  <tr key={p.id} className="border-b last:border-b-0">
-                    <td className="px-3 py-2 font-medium">{p.name}</td>
-                    <td className="px-3 py-2">
-                      <div>{p.category}</div>
-                      <div className="text-xs text-gray-500">
-                        {p.subCategory}
-                      </div>
-                    </td>
-                    <td className="px-3 py-2">{p.compatibleModel}</td>
-                    <td className="px-3 py-2">{p.partNumber}</td>
-                    <td className="px-3 py-2">₹{p.price}</td>
-                    <td className="px-3 py-2">
-                      <button
-                        onClick={() => handleDelete(p.id)}
-                        className="text-xs text-red-600 border border-red-500 px-2 py-1 rounded"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
-  }
+                  }
