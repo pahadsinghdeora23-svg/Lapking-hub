@@ -13,7 +13,7 @@ type Product = {
   price: number;
   partNumber: string;
   description: string;
-  imageUrl: string; // abhi sirf URL, upload baad me
+  imageUrl: string;
 };
 
 export default function ProductsPage() {
@@ -21,8 +21,9 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Form state
-  const [formData, setFormData] = useState<Omit<Product, "id" | "price"> & { price: string }>({
+  const [formData, setFormData] = useState<
+    Omit<Product, "id" | "price"> & { price: string }
+  >({
     name: "",
     category: "",
     subCategory: "",
@@ -33,7 +34,6 @@ export default function ProductsPage() {
     imageUrl: "",
   });
 
-  // Firestore se products load
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -55,9 +55,9 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // Form submit -> naya product Firestore me save
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     if (!formData.name.trim()) {
       alert("Product name required hai.");
       return;
@@ -83,7 +83,6 @@ export default function ProductsPage() {
         createdAt: new Date(),
       });
 
-      // Form reset
       setFormData({
         name: "",
         category: "",
@@ -95,7 +94,6 @@ export default function ProductsPage() {
         imageUrl: "",
       });
 
-      // Naya list load
       await fetchProducts();
     } catch (err) {
       console.error("Error saving product", err);
@@ -105,7 +103,6 @@ export default function ProductsPage() {
     }
   };
 
-  // Delete product
   const handleDelete = async (id?: string) => {
     if (!id) return;
     const ok = confirm("Ye product delete karna hai?");
@@ -143,7 +140,9 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="HP Laptop Keyboard"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               />
             </div>
@@ -154,7 +153,9 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="Keyboard / Charger / Battery"
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
               />
             </div>
 
@@ -164,7 +165,9 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="Dell / HP / Lenovo"
                 value={formData.subCategory}
-                onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, subCategory: e.target.value })
+                }
               />
             </div>
 
@@ -175,7 +178,10 @@ export default function ProductsPage() {
                 placeholder="Dell Inspiron 3521, HP 15s..."
                 value={formData.compatibleModel}
                 onChange={(e) =>
-                  setFormData({ ...formData, compatibleModel: e.target.value })
+                  setFormData({
+                    ...formData,
+                    compatibleModel: e.target.value,
+                  })
                 }
               />
             </div>
@@ -187,7 +193,9 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="1499"
                 value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: e.target.value })
+                }
               />
             </div>
 
@@ -197,7 +205,9 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="D3LL-KB-123"
                 value={formData.partNumber}
-                onChange={(e) => setFormData({ ...formData, partNumber: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, partNumber: e.target.value })
+                }
               />
             </div>
 
@@ -207,10 +217,13 @@ export default function ProductsPage() {
                 className="w-full rounded border px-3 py-2 text-sm"
                 placeholder="https://example.com/image.jpg"
                 value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
+                }
               />
               <p className="text-xs text-gray-400">
-                Abhi ke liye sirf URL. Baad me direct upload feature add karenge.
+                Abhi ke liye sirf URL. Baad me direct upload feature add
+                karenge.
               </p>
             </div>
 
@@ -221,7 +234,9 @@ export default function ProductsPage() {
                 rows={3}
                 placeholder="Short description in Hindi / English..."
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
               />
             </div>
           </div>
@@ -265,7 +280,9 @@ export default function ProductsPage() {
                     <td className="px-3 py-2 font-medium">{p.name}</td>
                     <td className="px-3 py-2">
                       <div>{p.category}</div>
-                      <div className="text-xs text-gray-500">{p.subCategory}</div>
+                      <div className="text-xs text-gray-500">
+                        {p.subCategory}
+                      </div>
                     </td>
                     <td className="px-3 py-2">{p.compatibleModel}</td>
                     <td className="px-3 py-2">{p.partNumber}</td>
