@@ -16,7 +16,9 @@ export default function AdminProductsPage() {
         backgroundColor: "#f1f5f9",
       }}
     >
-      <h1 style={{ fontSize: "20px", fontWeight: 600 }}>Test Admin Products</h1>
+      <h1 style={{ fontSize: "20px", fontWeight: 600 }}>
+        Test Admin Products - VERSION 3
+      </h1>
 
       <button
         onClick={handleClick}
@@ -33,7 +35,10 @@ export default function AdminProductsPage() {
         👉 Click Me (Test)
       </button>
 
-      <p>Bas is ek button se test kar rahe hain ki click kaam kar raha hai ya nahi.</p>
+      <p>
+        Ye test page hai. Agar aapko yahi text dikh raha hai to sahi project
+        open hai.
+      </p>
     </div>
   );
 }
