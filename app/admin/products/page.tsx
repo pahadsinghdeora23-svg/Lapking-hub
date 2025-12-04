@@ -1,6 +1,15 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
+  const router = useRouter();
+
+  // ✅ Ye function button click pe chalega
+  const handleAddProduct = () => {
+    router.push("/admin/products/new");
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Top header */}
@@ -12,15 +21,16 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        {/* ✅ Add Product button with Link */}
-        <Link href="/admin/products/new" className="inline-block">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm">
-            + Add Product
-          </button>
-        </Link>
+        {/* ✅ Simple button with onClick */}
+        <button
+          onClick={handleAddProduct}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm"
+        >
+          + Add Product
+        </button>
       </div>
 
-      {/* Products table – same pehle jaisa demo data */}
+      {/* 🔹 Neeche same pehle wala demo table hi rakha hai */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50">
