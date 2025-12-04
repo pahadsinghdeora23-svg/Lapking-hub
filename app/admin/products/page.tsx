@@ -17,7 +17,7 @@ export default function AdminProductsPage() {
       }}
     >
       <h1 style={{ fontSize: "20px", fontWeight: 600 }}>
-        Test Admin Products - VERSION 3
+        Test Admin Products (Firebase connected in lib/firebase.ts)
       </h1>
 
       <button
@@ -36,8 +36,8 @@ export default function AdminProductsPage() {
       </button>
 
       <p>
-        Ye test page hai. Agar aapko yahi text dikh raha hai to sahi project
-        open hai.
+        Agar is button pe click karne se alert aaye to JavaScript, client
+        component sab sahi chal raha hai. Firebase sirf background me ready hai.
       </p>
     </div>
   );
