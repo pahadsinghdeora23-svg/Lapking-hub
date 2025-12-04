@@ -1,120 +1,52 @@
 "use client";
 
-import Link from "next/link";
-
-type Product = {
-  id: string;
-  name: string;
-  sku: string;
-  price: number;
-  stock: number;
-};
-
-const demoProducts: Product[] = [
-  {
-    id: "hp-charger",
-    name: "HP Charger",
-    sku: "HP-65W",
-    price: 799,
-    stock: 10,
-  },
-  {
-    id: "lenovo-keyboard",
-    name: "Lenovo Keyboard",
-    sku: "LKB-01",
-    price: 499,
-    stock: 15,
-  },
-  {
-    id: "dell-battery",
-    name: "Dell Battery",
-    sku: "DELL-BAT",
-    price: 1499,
-    stock: 8,
-  },
-];
-
 export default function ProductsPage() {
+  function handleAddClick() {
+    alert("✅ Add Product button WORKING!\nAbhi ye sirf test hai.");
+  }
+
+  function handleEditClick() {
+    alert("✅ Edit button WORKING (test).");
+  }
+
+  function handleDeleteClick() {
+    alert("✅ Delete button WORKING (test).");
+  }
+
   return (
     <div className="p-6 space-y-4">
-      {/* Top heading + button */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Products</h1>
-          <p className="text-sm text-gray-500">
-            Yaha se aap Lapking Hub ke saare products manage karoge.
-          </p>
-        </div>
+      <h1 className="text-2xl font-semibold mb-4">Products (TEST PAGE)</h1>
 
-        {/* SIRF LINK – koi router.push nahi */}
-        <Link
-          href="/admin/products/new"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow flex items-center justify-center"
+      {/* Add Product test button */}
+      <button
+        type="button"
+        onClick={handleAddClick}
+        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow"
+      >
+        + Add Product (TEST)
+      </button>
+
+      <div className="mt-8 space-x-2">
+        <button
+          type="button"
+          onClick={handleEditClick}
+          className="px-3 py-1 text-xs rounded border border-gray-300"
         >
-          + Add Product
-        </Link>
+          Edit (TEST)
+        </button>
+        <button
+          type="button"
+          onClick={handleDeleteClick}
+          className="px-3 py-1 text-xs rounded border border-red-300 text-red-600"
+        >
+          Delete (TEST)
+        </button>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-xl shadow border overflow-hidden">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-100 text-xs uppercase text-gray-500">
-            <tr>
-              <th className="px-4 py-3 text-left">Name</th>
-              <th className="px-4 py-3 text-left">SKU</th>
-              <th className="px-4 py-3 text-left">Price</th>
-              <th className="px-4 py-3 text-left">Stock</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {demoProducts.map((product) => (
-              <tr
-                key={product.id}
-                className="border-t last:border-b hover:bg-gray-50"
-              >
-                <td className="px-4 py-3 whitespace-nowrap">{product.name}</td>
-                <td className="px-4 py-3 whitespace-nowrap">{product.sku}</td>
-                <td className="px-4 py-3 whitespace-nowrap">
-                  ₹{product.price}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap">
-                  {product.stock}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-right space-x-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      alert(
-                        `Edit button working (product: ${product.name}).\nBaad me yaha edit form open karenge.`
-                      )
-                    }
-                    className="px-3 py-1 text-xs rounded border border-gray-300"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      alert(
-                        `Delete button working (product: ${product.name}).\nBaad me yaha delete logic lagayenge.`
-                      )
-                    }
-                    className="px-3 py-1 text-xs rounded border border-red-300 text-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <p className="px-4 py-3 text-xs text-gray-400 border-t">
-          Note: Abhi ye demo data hai. Next step me isko Firestore se connect
-          karenge.
-        </p>
-      </div>
+      <p className="mt-6 text-sm text-gray-500">
+        Ye sirf testing page hai. Jab ye buttons chalne lagenge tab wapas
+        proper table + Firestore data add karenge.
+      </p>
     </div>
   );
 }
