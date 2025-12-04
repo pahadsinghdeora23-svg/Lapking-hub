@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
 
 type Product = {
   id: string;
@@ -36,24 +35,6 @@ const demoProducts: Product[] = [
 ];
 
 export default function ProductsPage() {
-  // Sirf test ke liye – agar ye alert show ho raha hai to JS sahi chal rahi hai
-  useEffect(() => {
-    alert("Products page JS working (test alert) – baad me isko hata denge.");
-  }, []);
-
-  const handleEdit = (id: string) => {
-    alert(`Edit clicked for product: ${id}\n(Abhi demo mode hai)`);
-  };
-
-  const handleDelete = (id: string) => {
-    const ok = confirm(
-      `Delete clicked for product: ${id}\n(Abhi demo data, real delete nahi hoga)`
-    );
-    if (ok) {
-      alert("Demo mode: Delete button working. Firestore ke baad real delete karege.");
-    }
-  };
-
   return (
     <div className="p-6 space-y-4">
       {/* Top heading + button */}
@@ -65,7 +46,7 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        {/* yaha simple Link – koi router.push nahi */}
+        {/* SIRF LINK – koi router.push nahi */}
         <Link
           href="/admin/products/new"
           className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg shadow flex items-center justify-center"
@@ -94,17 +75,31 @@ export default function ProductsPage() {
               >
                 <td className="px-4 py-3 whitespace-nowrap">{product.name}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{product.sku}</td>
-                <td className="px-4 py-3 whitespace-nowrap">₹{product.price}</td>
-                <td className="px-4 py-3 whitespace-nowrap">{product.stock}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  ₹{product.price}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  {product.stock}
+                </td>
                 <td className="px-4 py-3 whitespace-nowrap text-right space-x-2">
                   <button
-                    onClick={() => handleEdit(product.id)}
+                    type="button"
+                    onClick={() =>
+                      alert(
+                        `Edit button working (product: ${product.name}).\nBaad me yaha edit form open karenge.`
+                      )
+                    }
                     className="px-3 py-1 text-xs rounded border border-gray-300"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(product.id)}
+                    type="button"
+                    onClick={() =>
+                      alert(
+                        `Delete button working (product: ${product.name}).\nBaad me yaha delete logic lagayenge.`
+                      )
+                    }
                     className="px-3 py-1 text-xs rounded border border-red-300 text-red-600"
                   >
                     Delete
