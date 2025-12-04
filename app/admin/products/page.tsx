@@ -1,74 +1,122 @@
 "use client";
 
-export default function ProductsPage() {
+import React, { useState } from "react";
+
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+};
+
+const initialProducts: Product[] = [
+  { id: "1", name: "HP Charger", price: 799, stock: 10 },
+  { id: "2", name: "Lenovo Keyboard", price: 499, stock: 15 },
+  { id: "3", name: "Dell Battery", price: 1499, stock: 8 },
+];
+
+const AdminProductsPage: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+
+  // + Add Product button
+  const handleAddProduct = () => {
+    alert("+ Add Product button working! (Baad me form page open karenge)");
+    // yaha baad me: router.push("/admin/products/new");
+  };
+
+  // Edit button
+  const handleEdit = (product: Product) => {
+    alert(`Edit click: ${product.name}`);
+    // yaha baad me: router.push(`/admin/products/${product.id}/edit`);
+  };
+
+  // Delete button
+  const handleDelete = (id: string) => {
+    const confirmDelete = confirm("Is product ko delete karna hai?");
+    if (!confirmDelete) return;
+
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  };
+
   return (
-    <div
-      style={{
-        padding: "24px",
-        minHeight: "100vh",
-        background: "#f4f4f5",
-        fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: "24px", fontWeight: 600, marginBottom: "16px" }}>
-        Products TEST PAGE (V3)
-      </h1>
+    <div className="min-h-screen bg-slate-100 px-4 py-6">
+      <div className="mx-auto max-w-3xl rounded-2xl bg-white p-4 shadow-sm">
+        {/* Header */}
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">Admin Products</h1>
 
-      <p style={{ marginBottom: "16px", fontSize: "14px" }}>
-        Agar niche wale buttons pe click karne se <b>alert</b> aata hai,
-        to React / Next sab theek hai. Sirf yahi test kar rahe hain.
-      </p>
+          <button
+            onClick={handleAddProduct}
+            className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition active:scale-95 hover:bg-blue-700"
+          >
+            + Add Product
+          </button>
+        </div>
 
-      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-        <button
-          type="button"
-          onClick={() => alert("✅ Add Product button WORKING")}
-          style={{
-            padding: "8px 16px",
-            borderRadius: "999px",
-            border: "none",
-            fontSize: "14px",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          Add Product (TEST)
-        </button>
+        {/* Products table */}
+        <div className="overflow-hidden rounded-2xl border border-slate-200">
+          <table className="min-w-full text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-4 py-3 text-left font-semibold text-slate-600">
+                  PRODUCT
+                </th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-600">
+                  PRICE
+                </th>
+                <th className="px-4 py-3 text-left font-semibold text-slate-600">
+                  STOCK
+                </th>
+                <th className="px-4 py-3 text-right font-semibold text-slate-600">
+                  ACTIONS
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-t border-slate-200 bg-white"
+                >
+                  <td className="px-4 py-3">{product.name}</td>
+                  <td className="px-4 py-3">₹{product.price}</td>
+                  <td className="px-4 py-3">{product.stock}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => handleEdit(product)}
+                        className="rounded-lg border border-slate-400 px-3 py-1 text-xs font-medium transition hover:bg-slate-100 active:scale-95"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="rounded-lg border border-red-500 px-3 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50 active:scale-95"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
 
-        <button
-          type="button"
-          onClick={() => alert("✅ Edit button WORKING")}
-          style={{
-            padding: "8px 16px",
-            borderRadius: "999px",
-            border: "1px solid #000",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}
-        >
-          Edit (TEST)
-        </button>
-
-        <button
-          type="button"
-          onClick={() => alert("✅ Delete button WORKING")}
-          style={{
-            padding: "8px 16px",
-            borderRadius: "999px",
-            border: "1px solid #dc2626",
-            color: "#dc2626",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}
-        >
-          Delete (TEST)
-        </button>
+              {products.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-4 py-6 text-center text-slate-500"
+                  >
+                    Abhi koi product nahi hai. + Add Product dabakar naya product
+                    add karein.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      <p style={{ marginTop: "24px", fontSize: "13px", color: "#6b7280" }}>
-        Note: Ye sirf testing page hai. Jab yaha click sahi se chalne lagega,
-        tab wapas se proper table + Firestore data add karenge.
-      </p>
     </div>
   );
-}
+};
+
+export default AdminProductsPage;
