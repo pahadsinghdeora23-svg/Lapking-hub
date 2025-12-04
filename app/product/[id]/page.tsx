@@ -1,132 +1,74 @@
-import Link from "next/link";
-const products = [
-  {
-    id: "hp-charger",          // 👈 yahi ID URL se match karegi
-    name: "HP Charger",
-    price: 799,
-    stock: 10,
-    description: "Original HP laptop charger, 65W.",
-  },
-  {
-    id: "lenovo-keyboard",
-    name: "Lenovo Keyboard",
-    price: 499,
-    stock: 15,
-    description: "USB Lenovo keyboard, full size.",
-  },
-  {
-    id: "dell-battery",
-    name: "Dell Battery",
-    price: 1499,
-    stock: 8,
-    description: "Compatible Dell laptop battery.",
-  },
-];
+"use client";
 
-type ProductPageProps = {
-  params: { id: string };
-};
-
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.id === params.id);
-
-  if (!product) {
-    return (
-      <main
-        style={{
-          minHeight: "100vh",
-          padding: "16px",
-          maxWidth: "480px",
-          margin: "0 auto",
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-          backgroundColor: "#020617",
-          color: "white",
-        }}
-      >
-        <h1 style={{ fontSize: "22px", fontWeight: 700, marginBottom: "12px" }}>
-          Product not found
-        </h1>
-        <Link href="/" style={{ color: "#22c55e", fontSize: "14px", textDecoration: "none" }}>
-          ⬅ Back to Home
-        </Link>
-      </main>
-    );
-  }
-
+export default function ProductsPage() {
   return (
-    <main
+    <div
       style={{
+        padding: "24px",
         minHeight: "100vh",
-        padding: "16px",
-        maxWidth: "480px",
-        margin: "0 auto",
+        background: "#f4f4f5",
         fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-        backgroundColor: "#020617",
-        color: "white",
       }}
     >
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "16px",
-        }}
-      >
-        <h1 style={{ fontSize: "22px", fontWeight: 700 }}>{product.name}</h1>
+      <h1 style={{ fontSize: "24px", fontWeight: 600, marginBottom: "16px" }}>
+        Products TEST PAGE (V3)
+      </h1>
 
-        <Link
-          href="/"
+      <p style={{ marginBottom: "16px", fontSize: "14px" }}>
+        Agar niche wale buttons pe click karne se <b>alert</b> aata hai,
+        to React / Next sab theek hai. Sirf yahi test kar rahe hain.
+      </p>
+
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <button
+          type="button"
+          onClick={() => alert("✅ Add Product button WORKING")}
           style={{
-            fontSize: "12px",
-            color: "#22c55e",
-            textDecoration: "none",
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "none",
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
           }}
         >
-          ⬅ Home
-        </Link>
-      </header>
+          Add Product (TEST)
+        </button>
 
-      <div
-        style={{
-          borderRadius: "12px",
-          border: "1px solid #1f2937",
-          padding: "12px",
-          marginBottom: "16px",
-          backgroundColor: "#020617",
-        }}
-      >
-        <p style={{ fontSize: "14px", marginBottom: "8px" }}>{product.description}</p>
-
-        <p
+        <button
+          type="button"
+          onClick={() => alert("✅ Edit button WORKING")}
           style={{
-            fontSize: "16px",
-            fontWeight: 700,
-            color: "#22c55e",
-            marginBottom: "4px",
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "1px solid #000",
+            fontSize: "14px",
+            cursor: "pointer",
           }}
         >
-          ₹{product.price}
-        </p>
+          Edit (TEST)
+        </button>
 
-        <p style={{ fontSize: "12px", color: "#9ca3af" }}>Stock: {product.stock} pcs</p>
+        <button
+          type="button"
+          onClick={() => alert("✅ Delete button WORKING")}
+          style={{
+            padding: "8px 16px",
+            borderRadius: "999px",
+            border: "1px solid #dc2626",
+            color: "#dc2626",
+            fontSize: "14px",
+            cursor: "pointer",
+          }}
+        >
+          Delete (TEST)
+        </button>
       </div>
 
-      <Link
-        href="/cart"
-        style={{
-          display: "inline-block",
-          borderRadius: "999px",
-          padding: "10px 20px",
-          backgroundColor: "#22c55e",
-          color: "#020617",
-          fontSize: "14px",
-          fontWeight: 600,
-          textDecoration: "none",
-        }}
-      >
-        🛒 Add to Cart (demo)
-      </Link>
-    </main>
+      <p style={{ marginTop: "24px", fontSize: "13px", color: "#6b7280" }}>
+        Note: Ye sirf testing page hai. Jab yaha click sahi se chalne lagega,
+        tab wapas se proper table + Firestore data add karenge.
+      </p>
+    </div>
   );
-      }
+}
