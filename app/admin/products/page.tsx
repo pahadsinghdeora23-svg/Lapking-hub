@@ -1,25 +1,9 @@
-"use client";
-
 import Link from "next/link";
-
-type Product = {
-  id: string;
-  name: string;
-  sku: string;
-  price: number;
-  stock: number;
-};
-
-const demoProducts: Product[] = [
-  { id: "1", name: "HP Charger", sku: "HP-65W", price: 799, stock: 10 },
-  { id: "2", name: "Lenovo Keyboard", sku: "LKB-01", price: 499, stock: 15 },
-  { id: "3", name: "Dell Battery", sku: "DELL-BAT", price: 1499, stock: 8 },
-];
 
 export default function ProductsPage() {
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
+      {/* Top header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Products</h1>
@@ -28,50 +12,69 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        {/* IMPORTANT: yaha se naya page open hoga */}
-        <Link
-          href="/admin/products/new"
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          + Add Product
+        {/* ✅ Add Product button with Link */}
+        <Link href="/admin/products/new" className="inline-block">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm">
+            + Add Product
+          </button>
         </Link>
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-        <table className="min-w-full text-left text-sm">
-          <thead className="bg-gray-50 text-xs font-semibold uppercase text-gray-500">
+      {/* Products table – same pehle jaisa demo data */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">SKU</th>
-              <th className="px-4 py-3">Price</th>
-              <th className="px-4 py-3">Stock</th>
-              <th className="px-4 py-3 text-right">Actions</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">NAME</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">SKU</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">PRICE</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">STOCK</th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">ACTIONS</th>
             </tr>
           </thead>
-          <tbody>
-            {demoProducts.map((product) => (
-              <tr key={product.id} className="border-t text-gray-700">
-                <td className="px-4 py-3">{product.name}</td>
-                <td className="px-4 py-3">{product.sku}</td>
-                <td className="px-4 py-3">₹{product.price}</td>
-                <td className="px-4 py-3">{product.stock}</td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <button className="rounded border border-gray-300 px-3 py-1 text-xs">
-                    Edit
-                  </button>
-                  <button className="rounded border border-red-500 px-3 py-1 text-xs text-red-600">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+          <tbody className="divide-y divide-gray-100">
+            <tr>
+              <td className="px-4 py-3">HP Charger</td>
+              <td className="px-4 py-3">HP-65W</td>
+              <td className="px-4 py-3">₹799</td>
+              <td className="px-4 py-3">10</td>
+              <td className="px-4 py-3 space-x-2">
+                <button className="px-3 py-1 rounded border text-xs">Edit</button>
+                <button className="px-3 py-1 rounded border border-red-500 text-red-600 text-xs">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3">Lenovo Keyboard</td>
+              <td className="px-4 py-3">LKB-01</td>
+              <td className="px-4 py-3">₹499</td>
+              <td className="px-4 py-3">15</td>
+              <td className="px-4 py-3 space-x-2">
+                <button className="px-3 py-1 rounded border text-xs">Edit</button>
+                <button className="px-3 py-1 rounded border border-red-500 text-red-600 text-xs">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3">Dell Battery</td>
+              <td className="px-4 py-3">DELL-BAT</td>
+              <td className="px-4 py-3">₹1499</td>
+              <td className="px-4 py-3">8</td>
+              <td className="px-4 py-3 space-x-2">
+                <button className="px-3 py-1 rounded border text-xs">Edit</button>
+                <button className="px-3 py-1 rounded border border-red-500 text-red-600 text-xs">
+                  Delete
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <p className="text-xs text-gray-400">
-        Note: Abhi ye demo data hai. Next step me isko Firestore se connect karenge.
+      <p className="text-xs text-gray-400 mt-2">
+        Note: Abhi ye demo data hai. Next step me isko Firebase se connect karenge.
       </p>
     </div>
   );
